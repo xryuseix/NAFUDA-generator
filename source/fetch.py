@@ -17,7 +17,7 @@ def download_file(url, dst_path):
 def download_images(twitterid):
     twitter_url = 'https://twitter.com/'
     path = './storage/downloaded_images/'
-    xpath_string = '//*[@id="react-root"]/div/div/div/main/div/div/div/div[1]/div/div/div/div/div[1]/div/div[1]/a/div[1]/div[2]/div/img'\
+    xpath_string = '//*[@id="react-root"]/div/div/div/main/div/div/div/div[1]/div/div/div/div/div[1]/div/div[1]/a/div[1]/div[2]/div/img'
 
     # ヘッドレスモードで起動
     options = webdriver.ChromeOptions()

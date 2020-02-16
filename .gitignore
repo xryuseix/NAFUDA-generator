@@ -27,3 +27,4 @@ config/*
 storage/csv_files/*
 storage/default_images/*.pptx
 storage/downloaded_images/*
+storage/generated_images/*

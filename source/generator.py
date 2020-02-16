@@ -1,6 +1,10 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
+import fetch
+import read_csv
+import re
+from tqdm import tqdm
 
 
 def make_image(username, twitter_id = 'rippro_logo_small'):
@@ -26,7 +30,6 @@ def make_image(username, twitter_id = 'rippro_logo_small'):
 
     large_img = img1
     small_img = img2
-    
     plt.axis('off')
     fig.axes.get_xaxis().set_visible(False)
     fig.axes.get_yaxis().set_visible(False)
@@ -36,12 +39,12 @@ def make_image(username, twitter_id = 'rippro_logo_small'):
     y_offset=204
     large_img[y_offset:y_offset+small_img.shape[0], x_offset:x_offset+small_img.shape[1]] = small_img
 
-    max_char = 12 # 枠に収まる最大の文字数
-    name_left = 250 # 名前の枠の左端
+    max_char = 11 # 枠に収まる最大の文字数
+    name_left = 240 # 名前の枠の左端
     name_right = 670 # 名前の枠の右端
     username_size = len(username) # 名前文字数
     font_size = 2.0 # 名前のフォントの大きさ
-    char_size = 30 # 一文字単位の文字サイズ
+    char_size = 31 # 一文字単位の文字サイズ
     if username_size > max_char:
         font_size = 1.5
         char_size = 23
@@ -55,5 +58,12 @@ def make_image(username, twitter_id = 'rippro_logo_small'):
     # plt.show()
     plt.savefig('./storage/generated_images/' + username + '.png', bbox_inches='tight', pad_inches = 0)
 
+csv = read_csv.read_csv()
 
-make_image('xryuseix')
+for row in tqdm(csv):
+    s = row['Twitter ID（Twitterアイコンを名札の画像に使用します。記入がない場合、画像なしの名札になります）']
+    s = re.sub('^@', '', s)
+    row['Twitter ID（Twitterアイコンを名札の画像に使用します。記入がない場合、画像なしの名札になります）'] = s
+    # print(s)
+    fetch.download_images(row['Twitter ID（Twitterアイコンを名札の画像に使用します。記入がない場合、画像なしの名札になります）'])
+    make_image(row['名前またはハンドルネーム（名札で使用します）'], row['Twitter ID（Twitterアイコンを名札の画像に使用します。記入がない場合、画像なしの名札になります）'])
