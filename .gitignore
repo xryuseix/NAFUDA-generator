@@ -25,4 +25,5 @@ setting.json
 # Custom files
 config/*
 storage/csv_files/*
-storage/images/*.pptx
+storage/default_images/*.pptx
+storage/downloaded_images/*

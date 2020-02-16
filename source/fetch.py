@@ -1,6 +1,5 @@
 import time
 from selenium import webdriver
-import os
 import pprint
 import time
 import urllib.error
@@ -15,27 +14,20 @@ def download_file(url, dst_path):
     except urllib.error.URLError as e:
         print(e)
 
-# url = 'https://pbs.twimg.com/profile_images/1160071194390831106/1JLRe3JE_200x200.jpg'
-# dst_path = 'py-logo.png'
-# download_file(url, dst_path)
+def download_images(twitterid):
+    twitter_url = 'https://twitter.com/'
+    path = './storage/downloaded_images/'
+    xpath_string = '//*[@id="react-root"]/div/div/div/main/div/div/div/div[1]/div/div/div/div/div[1]/div/div[1]/a/div[1]/div[2]/div/img'\
 
+    # ヘッドレスモードで起動
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    driver = webdriver.Chrome(options=options)
 
-url = 'https://twitter.com/ryusei_ishika'
-path = './storage/downloaded_images/'
-xpath_string = '//*[@id="react-root"]/div/div/div/main/div/div/div/div[1]/div/div/div/div/div[1]/div/div[1]/a/div[1]/div[2]/div/img'
-css_string = 'css-1dbjc4n r-sdzlij r-1p0dtai r-1mlwlqe r-1d2f490 r-1udh08x r-u8s1d r-zchlnj r-ipm5af r-417010'
+    driver.get(twitter_url + twitterid)
+    time.sleep(1)
+    # 画像情報が入ったURLを取得
+    image_url = driver.find_element_by_xpath(xpath_string).get_attribute("src")
 
-driver = webdriver.Chrome()
-
-# # ヘッドレスモード
-# # options = webdriver.ChromeOptions()
-# # options.add_argument('--headless')
-# # driver = webdriver.Chrome(options=options)
-
-
-driver.get(url)
-time.sleep(1)
-
-print(driver.find_element_by_xpath(xpath_string).get_attribute("src"))
-
-driver.close()
+    driver.close()
+    download_file(image_url, path + twitterid + '.png')
